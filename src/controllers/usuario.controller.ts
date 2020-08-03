@@ -9,11 +9,21 @@ import Usuario from '../database/models/usuario.model'
 
  const getUsuarios = async (req:Request, res:Response, )=>{
 
-    const usuarios = await Usuario.find({}, 'nombre email role google')
+    const desde = Number(req.query.desde) || 0;
+  
+  const [usuarios, total ] =  await Promise.all([
+                Usuario.find({}, 'nombre email role google, img')
+                                .skip(desde)
+                                .limit(5),
+
+                Usuario.find().countDocuments()
+
+    ])
 
     res.status(200).json({
         ok: true,
         usuarios,
+        total
     })     
 };
 

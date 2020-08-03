@@ -11,7 +11,7 @@ const  generarJwt = (uid:string) =>{
         const paylaod:Object = { uid, };
            
             jwt.sign(paylaod , <string>process.env.JWT_SECRET, {
-                expiresIn: '2h'
+                expiresIn: '12h'
             }, (err, token)=>{
     
                 if (err){

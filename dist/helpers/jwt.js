@@ -10,7 +10,7 @@ const generarJwt = (uid) => {
     return new Promise((resolve, reject) => {
         const paylaod = { uid, };
         jsonwebtoken_1.default.sign(paylaod, process.env.JWT_SECRET, {
-            expiresIn: '2h'
+            expiresIn: '12h'
         }, (err, token) => {
             if (err) {
                 console.log(err);

@@ -28,10 +28,17 @@ const jwt_1 = __importDefault(require("../helpers/jwt"));
 // importar el modelo de usuarios
 const usuario_model_1 = __importDefault(require("../database/models/usuario.model"));
 const getUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const usuarios = yield usuario_model_1.default.find({}, 'nombre email role google');
+    const desde = Number(req.query.desde) || 0;
+    const [usuarios, total] = yield Promise.all([
+        usuario_model_1.default.find({}, 'nombre email role google, img')
+            .skip(desde)
+            .limit(5),
+        usuario_model_1.default.find().countDocuments()
+    ]);
     res.status(200).json({
         ok: true,
         usuarios,
+        total
     });
 });
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
