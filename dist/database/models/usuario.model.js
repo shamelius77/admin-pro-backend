@@ -38,7 +38,6 @@ const UsuarioSchema = new mongoose_1.Schema({
         default: false
     }
 });
-// metodo que no permite manipular el modelo a lo que queremos mostrar como salida, sin afectar a la base de datos
 UsuarioSchema.method('toJSON', function () {
     const _a = this.toObject(), { __v, _id, password } = _a, object = __rest(_a, ["__v", "_id", "password"]);
     object.uid = _id;

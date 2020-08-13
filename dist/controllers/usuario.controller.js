@@ -24,8 +24,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const jwt_1 = __importDefault(require("../helpers/jwt"));
-// importar el modelo de usuarios
 const usuario_model_1 = __importDefault(require("../database/models/usuario.model"));
 const getUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
@@ -53,11 +53,9 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         const usuario = new usuario_model_1.default(req.body);
         console.log(password);
-        // Encriptar password 
         const salt = bcryptjs_1.default.genSaltSync();
         usuario.password = bcryptjs_1.default.hashSync(password, salt);
         yield usuario.save();
-        // generar TOKEN
         const token = yield jwt_1.default(usuario.id);
         res.status(200).json({
             ok: true,
@@ -74,18 +72,21 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 const updUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // TODO: validar token
     const uid = req.params.id;
     try {
-        const usuariosDB = yield usuario_model_1.default.findById(uid);
-        // console.log(uid);
+        if (!mongoose_1.default.Types.ObjectId.isValid(uid)) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Error, el ID proporcionado no es valido'
+            });
+        }
+        const usuariosDB = yield usuario_model_1.default.findById(mongoose_1.default.Types.ObjectId(uid));
         if (!usuariosDB) {
             return res.status(404).json({
                 ok: false,
                 msg: 'No existe usuario con ese ID'
             });
         }
-        // Actualizaciones
         const _a = req.body, { google, password, email } = _a, campos = __rest(_a, ["google", "password", "email"]);
         if (usuariosDB.email !== email) {
             const existeEmail = yield usuario_model_1.default.findOne({ email });

@@ -1,10 +1,12 @@
 import {Response, Request } from 'express';
 import  bcrypt from 'bcryptjs'; 
+import mongoose from 'mongoose';
 
 import generarJwt  from '../helpers/jwt'
 
 // importar el modelo de usuarios
 import Usuario from '../database/models/usuario.model'
+
 
 
  const getUsuarios = async (req:Request, res:Response, )=>{
@@ -79,13 +81,18 @@ import Usuario from '../database/models/usuario.model'
 
     // TODO: validar token
 
-    const uid = req.params.id;
+    const uid =  req.params.id;
 
     try {
 
-        const usuariosDB = await Usuario.findById( uid );
-
-        // console.log(uid);
+        if (!mongoose.Types.ObjectId.isValid(uid)){
+            return  res.status(404).json({
+                ok : false,
+                msg: 'Error, el ID proporcionado no es valido'
+            })
+        }
+        
+        const usuariosDB = await Usuario.findById( mongoose.Types.ObjectId(uid)  );
 
         if ( !usuariosDB ){
              return  res.status(404).json({

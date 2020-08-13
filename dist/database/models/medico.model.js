@@ -31,7 +31,6 @@ const MedicoSchema = new mongoose_1.Schema({
         ref: 'Hospital'
     }
 });
-// metodo que no permite manipular el modelo a lo que queremos mostrar como salida, sin afectar a la base de datos
 MedicoSchema.method('toJSON', function () {
     const _a = this.toObject(), { __v } = _a, object = __rest(_a, ["__v"]);
     return object;

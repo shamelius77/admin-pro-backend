@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
-// importar de helpers
 const actualizar_img_1 = __importDefault(require("../helpers/actualizar-img"));
 const putFileUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const tipo = req.params.tipo;
@@ -27,18 +26,15 @@ const putFileUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             msg: 'el tipo no es medico, ni usuario , ni hospital'
         });
     }
-    // validar que si exista un archivo
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({
             ok: false,
             msg: 'No hay archivos para hacer uploads'
         });
     }
-    /// Procesar la imagen......
     const file = req.files.imagen;
-    const nombreCortado = file.name.split('.'); // archivo.1.3.jpg
+    const nombreCortado = file.name.split('.');
     const extensionArchivo = nombreCortado[nombreCortado.length - 1];
-    // validar extension
     const extensionesValidas = ['png', 'jpg', 'jpeg', 'gif'];
     if (!extensionesValidas.includes(extensionArchivo)) {
         return res.status(400).json({
@@ -46,11 +42,8 @@ const putFileUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             msg: 'No es una extension permitida'
         });
     }
-    // Generar nombre de archivo
     const nombreArchivo = `${uuid_1.v4()}.${extensionArchivo}`;
-    // Definir el Path donde se guarda la imagen
     const path = `./src/uploads/${tipo}/${nombreArchivo}`;
-    // Mover la imagen
     file.mv(path, (err) => {
         if (err) {
             console.log(err);
@@ -59,7 +52,6 @@ const putFileUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 msg: 'Error inesperado'
             });
         }
-        // Actualizar en la base de datos
         actualizar_img_1.default(tipo, id, nombreArchivo);
         res.status(200).json({
             ok: true,
@@ -72,7 +64,6 @@ const retornaImagen = (req, res) => {
     const tipo = req.params.tipo;
     const foto = req.params.foto;
     const pathImg = path_1.default.join(__dirname, `../uploads/${tipo}/${foto}`);
-    // validar si existe el path
     if (fs_1.default.existsSync(pathImg)) {
         res.sendFile(pathImg);
     }

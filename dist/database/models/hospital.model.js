@@ -26,7 +26,6 @@ const HospitalSchema = new mongoose_1.Schema({
         ref: 'Usuario'
     }
 }, { collection: 'hospitales' });
-// metodo que no permite manipular el modelo a lo que queremos mostrar como salida, sin afectar a la base de datos
 HospitalSchema.method('toJSON', function () {
     const _a = this.toObject(), { __v } = _a, object = __rest(_a, ["__v"]);
     return object;

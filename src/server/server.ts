@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import fileUpload  from 'express-fileupload';
+import path from 'path';
 
 
 import  configDb   from '../database/configDB';
@@ -30,7 +31,11 @@ class Server{
 
     }
 
+
    config(){
+
+       const publicPath = path.resolve(__dirname, '../public');
+
         // inicializa Base de datos 
        
         const dbCnn = new configDb();
@@ -40,12 +45,14 @@ class Server{
         this.app.set('port', process.env.PORT || this.port  );
 
         // Middlewares
+        this.app.use(express.static(publicPath));
 
         this.app.use(morgan('dev'));
         this.app.use(cors( {origin:true, credentials:true}));
 
         this.app.use(fileUpload());
-       
+
+      
    }
 
    routes(){
@@ -77,6 +84,7 @@ class Server{
         this.app.listen( this.app.get('port'), ()=>{
             console.log('Server on port :', this.app.get('port'));    
             }) ;
+
 
     }
 

@@ -1,5 +1,6 @@
 import  { Router } from 'express' ; 
 
+
 import uploadsCtrll  from '../controllers/upload.controller'
 import validarJwt from '../middlewares/validar-jwt';
 

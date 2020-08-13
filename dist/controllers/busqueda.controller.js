@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// importar el modelo de usuarios
 const usuario_model_1 = __importDefault(require("../database/models/usuario.model"));
 const medico_model_1 = __importDefault(require("../database/models/medico.model"));
 const hospital_model_1 = __importDefault(require("../database/models/hospital.model"));
@@ -24,9 +23,6 @@ const getBusquedas = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         medico_model_1.default.find({ nombre: regex }),
         hospital_model_1.default.find({ nombre: regex })
     ]);
-    // const usaurios = await Usuario.find({ nombre: regex  });
-    // const medicos = await Medico.find({ nombre: regex  });
-    // const hospitales = await Hospital.find({ nombre: regex  });
     res.status(200).json({
         ok: true,
         usaurios,

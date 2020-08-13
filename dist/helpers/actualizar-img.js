@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
-// importar los modelos
 const usuario_model_1 = __importDefault(require("../database/models/usuario.model"));
 const medico_model_1 = __importDefault(require("../database/models/medico.model"));
 const hospital_model_1 = __importDefault(require("../database/models/hospital.model"));
@@ -30,7 +29,6 @@ const actualizarImagen = (tipo, id, nombreArchivo) => __awaiter(void 0, void 0, 
             console.log(fs_1.default.existsSync(pathViejo));
             console.log(pathViejo);
             if (fs_1.default.existsSync(pathViejo)) {
-                // borrar la imagen anterior
                 fs_1.default.unlinkSync(pathViejo);
             }
             medico.img = nombreArchivo;
@@ -45,7 +43,6 @@ const actualizarImagen = (tipo, id, nombreArchivo) => __awaiter(void 0, void 0, 
             }
             pathViejo = `./src/uploads/${tipo}/${hospital.img}`;
             if (fs_1.default.existsSync(pathViejo)) {
-                // borrar la imagen anterior
                 fs_1.default.unlinkSync(pathViejo);
             }
             hospital.img = nombreArchivo;
@@ -60,7 +57,6 @@ const actualizarImagen = (tipo, id, nombreArchivo) => __awaiter(void 0, void 0, 
             }
             pathViejo = `./src/uploads/${tipo}/${usuario.img}`;
             if (fs_1.default.existsSync(pathViejo)) {
-                // borrar la imagen anterior
                 fs_1.default.unlinkSync(pathViejo);
             }
             usuario.img = nombreArchivo;

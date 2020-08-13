@@ -5,9 +5,9 @@
     "main": "index.js",
     "scripts": {
         "start": "node dist/index",
-        "server": "nodemon dist/index",
-        "uploads": "copyfiles --up 1 --all src/uploads/imagenes/*.* src/uploads/hospitales/*.* src/uploads/medicos/*.* src/uploads/usuarios/*.*  dist",
-        "build": "npm run uploads && tsc -w"
+        "inicia": "nodemon dist/index",
+        "uploads": "copyfiles --up 1 --all src/uploads/imagenes/*.* src/uploads/hospitales/*.* src/uploads/medicos/*.* src/uploads/usuarios/*.*  src/public/*.html dist",
+        "build": "tsc && npm run uploads"
     },
     "keywords": [],
     "author": "",
@@ -21,6 +21,7 @@
         "express": "^4.17.1",
         "express-fileupload": "^1.1.9",
         "express-validator": "^6.6.0",
+        "google-auth-library": "^6.0.6",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.9.25",
         "morgan": "^1.10.0",
@@ -37,6 +38,7 @@
         "@types/jsonwebtoken": "^8.5.0",
         "@types/mongoose": "^5.7.32",
         "@types/morgan": "^1.9.1",
-        "@types/uuid": "^8.0.0"
+        "@types/uuid": "^8.0.0",
+        "typescript": "^3.9.7"
     }
 }
