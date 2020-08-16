@@ -26,8 +26,15 @@ class MedicosClass{
               medicosCtrll.postMedico) ;
 
 
-        this.router.put('/:id',     medicosCtrll.putMedico) ;
-        this.router.delete('/:id',  medicosCtrll.deleteMedico) ;
+        this.router.put('/:id', [
+            validarJwt,
+            check('nombre', 'El nombre del medico es obligatorio').not().isEmpty(),
+            check('hospital', 'El hospital debe ser un ID valido').isMongoId(),
+            validarCampos
+        ],    medicosCtrll.putMedico) ;
+
+
+        this.router.delete('/:id', validarJwt, medicosCtrll.deleteMedico) ;
        
     }
 

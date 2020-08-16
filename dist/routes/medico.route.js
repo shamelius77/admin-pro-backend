@@ -21,8 +21,13 @@ class MedicosClass {
             express_validator_1.check('hospital', 'El hospital debe ser un ID valido').isMongoId(),
             validar_campos_1.default
         ], medico_controller_1.default.postMedico);
-        this.router.put('/:id', medico_controller_1.default.putMedico);
-        this.router.delete('/:id', medico_controller_1.default.deleteMedico);
+        this.router.put('/:id', [
+            validar_jwt_1.default,
+            express_validator_1.check('nombre', 'El nombre del medico es obligatorio').not().isEmpty(),
+            express_validator_1.check('hospital', 'El hospital debe ser un ID valido').isMongoId(),
+            validar_campos_1.default
+        ], medico_controller_1.default.putMedico);
+        this.router.delete('/:id', validar_jwt_1.default, medico_controller_1.default.deleteMedico);
     }
 }
 ;

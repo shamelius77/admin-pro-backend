@@ -18,7 +18,7 @@ const HospitalSchema = new Schema({
 
 // metodo que no permite manipular el modelo a lo que queremos mostrar como salida, sin afectar a la base de datos
 HospitalSchema.method('toJSON', function(){
-    const { __v, ...object } =  this.toObject(); 
+    const { __v,  ...object } =  this.toObject(); 
     return object
 } )
 

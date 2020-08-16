@@ -20,8 +20,12 @@ class HospitalesClass {
             express_validator_1.check('nombre', 'el nombre de hospital es obligatorio').not().isEmpty(),
             validar_campos_1.default
         ], hospital_controller_1.default.postHospital);
-        this.router.put('/:id', hospital_controller_1.default.putHospital);
-        this.router.delete('/:id', hospital_controller_1.default.deleteHospital);
+        this.router.put('/:id', [
+            validar_jwt_1.default,
+            express_validator_1.check('nombre', 'el nombre de hospital es obligatorio').not().isEmpty(),
+            validar_campos_1.default
+        ], hospital_controller_1.default.putHospital);
+        this.router.delete('/:id', validar_jwt_1.default, hospital_controller_1.default.deleteHospital);
     }
 }
 ;

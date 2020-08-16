@@ -1,4 +1,5 @@
 import {Response, Request } from 'express';
+import mongoose from 'mongoose';
 
 
 import generarJwt  from '../helpers/jwt'
@@ -61,64 +62,93 @@ const postHospital = async (req:Request, res:Response, )=>{
 
 const putHospital = async (req:Request, res:Response, )=>{
 
-    // const hospitales = await Hospital.find({} )
+        const id = req.params.id;
+        const uid = req.body.uid;
+   
+    try {
 
-    res.status(200).json({
-        ok: true,
-        msg: 'put  hospitales',
-    })     
+        if (!mongoose.Types.ObjectId.isValid(id)){
+            return  res.status(404).json({
+                ok : false,
+                msg: 'Error, el ID proporcionado no es valido'
+            })
+        }
+        const hospitalDB = await Hospital.findById({_id: mongoose.Types.ObjectId(id)}  );
+
+        if (!hospitalDB){
+
+           return res.status(404).json({
+                ok: true,
+                msg: 'Hospital no encontrado',
+                id
+            })     
+
+        }
+        const cambiosHospital = {
+            ...req.body,
+            usuario:  uid
+        }
+
+        const hospitalActualizado = await Hospital.findByIdAndUpdate(id, cambiosHospital, {new: true})
+
+
+        res.status(200).json({
+            ok: true,
+            hospital: hospitalActualizado
+        })     
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error.- hablar con el Administrador',
+        })  
+    }
+   
 };
+
 const deleteHospital = async (req:Request, res:Response, )=>{
 
-    // const hospitales = await Hospital.find({} )
+        const id = req.params.id;
+   
+    try {
 
-    res.status(200).json({
-        ok: true,
-        msg: 'delete hospitales',
-    })     
+        if (!mongoose.Types.ObjectId.isValid(id)){
+            return  res.status(404).json({
+                ok : false,
+                msg: 'Error, el ID proporcionado no es valido'
+            })
+        }
+        const hospitalDB = await Hospital.findById({_id: mongoose.Types.ObjectId(id)}  );
+
+        if (!hospitalDB){
+
+           return res.status(404).json({
+                ok: true,
+                msg: 'Hospital no encontrado',
+                id
+            })     
+
+        }
+
+        const hospitalEliminado = await Hospital.findByIdAndDelete(id)
+
+
+        res.status(200).json({
+            ok: true,
+            msg: 'hospital eleiminado',
+            hospital: hospitalEliminado
+        })     
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error.- hablar con el Administrador',
+        })  
+    }    
 };
 
-// const postHospital = async (req:Request, res:Response, )=>{
-
-//     const { nombre, img, usuario } = req.body;
-
-//     try{  
-        
-//         const existNomb = await Hospital.findOne({nombre});
-
-//         if (existNomb) {
-//                 return res.status(400).json({
-//                     ok: false,
-//                     msg: 'el hospital ya existe'
-//                 })
-//         }
-
-//         const hospital = new Hospital(req.body);
-        
-//         await hospital.save();
-        
-//         // generar TOKEN
-//         // const token = await generarJwt(usuario.id)
-        
-//         res.status(200).json({
-//             ok: true,
-//             hospital
-//         })     
-
-//     }
-//     catch(error){
-//         console.log(error);
-//         res.status(500).json({
-//                 ok: false,
-//                 msg: 'Error ...... revisar log'
-//         })
-
-//     }
-
-
-// };
-
- 
 
 export default { 
     getHospitales, 

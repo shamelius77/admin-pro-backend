@@ -36,7 +36,6 @@ UsuarioSchema.method('toJSON', function(){
     return object
 } )
 
-
 export interface IUser extends Document{
     nombre:     string;
     email:      string;

@@ -19,12 +19,11 @@ class AuthClass {
             express_validator_1.check('password', 'El password es obligatorio').not().isEmpty(),
             validar_campos_1.default
         ], auth_controller_1.default.postAuth);
-        this.router.get('/renew', validar_jwt_1.default, auth_controller_1.default.postAuth);
         this.router.post('/google', [
             express_validator_1.check('token', 'El token de google es obligatorio').not().isEmpty(),
             validar_campos_1.default
         ], auth_controller_1.default.googleSignIn);
-        this.router.get('/renew', validar_jwt_1.default, auth_controller_1.default.postAuth);
+        this.router.get('/renew', validar_jwt_1.default, auth_controller_1.default.renewToken);
     }
 }
 ;

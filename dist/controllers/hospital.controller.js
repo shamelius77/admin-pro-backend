@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
 const hospital_model_1 = __importDefault(require("../database/models/hospital.model"));
 const getHospitales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const hospitales = yield hospital_model_1.default.find()
@@ -47,16 +48,69 @@ const postHospital = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 const putHospital = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(200).json({
-        ok: true,
-        msg: 'put  hospitales',
-    });
+    const id = req.params.id;
+    const uid = req.body.uid;
+    try {
+        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Error, el ID proporcionado no es valido'
+            });
+        }
+        const hospitalDB = yield hospital_model_1.default.findById({ _id: mongoose_1.default.Types.ObjectId(id) });
+        if (!hospitalDB) {
+            return res.status(404).json({
+                ok: true,
+                msg: 'Hospital no encontrado',
+                id
+            });
+        }
+        const cambiosHospital = Object.assign(Object.assign({}, req.body), { usuario: uid });
+        const hospitalActualizado = yield hospital_model_1.default.findByIdAndUpdate(id, cambiosHospital, { new: true });
+        res.status(200).json({
+            ok: true,
+            hospital: hospitalActualizado
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error.- hablar con el Administrador',
+        });
+    }
 });
 const deleteHospital = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(200).json({
-        ok: true,
-        msg: 'delete hospitales',
-    });
+    const id = req.params.id;
+    try {
+        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Error, el ID proporcionado no es valido'
+            });
+        }
+        const hospitalDB = yield hospital_model_1.default.findById({ _id: mongoose_1.default.Types.ObjectId(id) });
+        if (!hospitalDB) {
+            return res.status(404).json({
+                ok: true,
+                msg: 'Hospital no encontrado',
+                id
+            });
+        }
+        const hospitalEliminado = yield hospital_model_1.default.findByIdAndDelete(id);
+        res.status(200).json({
+            ok: true,
+            msg: 'hospital eleiminado',
+            hospital: hospitalEliminado
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error.- hablar con el Administrador',
+        });
+    }
 });
 exports.default = {
     getHospitales,

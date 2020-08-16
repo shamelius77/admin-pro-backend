@@ -110,9 +110,20 @@ const googleSignIn = async (req:Request, res:Response)=>{
 
 const renewToken = async (req:Request, res:Response)=>{
 
-   
+    const uid =  req.body.uid;
+
     try {
-        
+
+         // generar TOKEN
+      const token = await generarJwt(uid)
+      
+        res.json({
+            ok: true,
+            uid
+        })
+
+
+
     } catch (error) {
 
         console.log(error);
@@ -129,5 +140,6 @@ const renewToken = async (req:Request, res:Response)=>{
 
 export default {
     postAuth,
-    googleSignIn
+    googleSignIn,
+    renewToken
 }

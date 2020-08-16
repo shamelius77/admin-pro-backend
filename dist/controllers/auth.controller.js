@@ -84,7 +84,13 @@ const googleSignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 const renewToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const uid = req.body.uid;
     try {
+        const token = yield jwt_1.default(uid);
+        res.json({
+            ok: true,
+            uid
+        });
     }
     catch (error) {
         console.log(error);
@@ -96,5 +102,6 @@ const renewToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.default = {
     postAuth,
-    googleSignIn
+    googleSignIn,
+    renewToken
 };

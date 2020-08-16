@@ -17,8 +17,10 @@ class HospitalesClass{
     
     routes(){
 
+        // Listar hospitales
         this.router.get('/', validarJwt,  hospitalesCtrll.getHospitales) ;
 
+        // Grabar un hospital
         this.router.post('/', [
             validarJwt,
             check('nombre', 'el nombre de hospital es obligatorio').not().isEmpty(),
@@ -27,8 +29,18 @@ class HospitalesClass{
         ],
         hospitalesCtrll.postHospital) ;
 
-        this.router.put('/:id',  hospitalesCtrll.putHospital) ;
-        this.router.delete('/:id',  hospitalesCtrll.deleteHospital) ;
+        // Actualizar hospital
+        this.router.put('/:id', [
+
+            validarJwt,
+            check('nombre', 'el nombre de hospital es obligatorio').not().isEmpty(),
+            validarCampos
+
+
+        ], hospitalesCtrll.putHospital) ;
+
+        // Eliminar un hospital
+        this.router.delete('/:id', validarJwt, hospitalesCtrll.deleteHospital) ;
        
     }
 

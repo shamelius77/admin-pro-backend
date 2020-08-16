@@ -25,9 +25,7 @@ class AuthClass{
         ] , 
         authCtrll.postAuth ) ;
 
-        this.router.get('/renew', validarJwt, authCtrll.postAuth ) ;
-
-
+       
 
         this.router.post('/google', 
                 [
@@ -37,8 +35,7 @@ class AuthClass{
                     authCtrll.googleSignIn ) ;
 
 
-
-        this.router.get('/renew', validarJwt, authCtrll.postAuth ) ;
+        this.router.get('/renew', validarJwt, authCtrll.renewToken ) ;
        
     }
 
